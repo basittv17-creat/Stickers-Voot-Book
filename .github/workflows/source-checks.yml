@@ -1,0 +1,36 @@
+name: Source checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.50.1'
+          channel: stable
+      - run: flutter pub get --enforce-lockfile
+      - run: dart format --output=none --set-exit-if-changed lib test integration_test
+      - run: flutter analyze
+      - run: flutter test
+      - name: Configure Android Gradle without packaging
+        shell: bash
+        run: |
+          set -eu
+          flutter_root="$(dirname "$(dirname "$(realpath "$(command -v flutter)")")")"
+          printf 'flutter.sdk=%s\nsdk.dir=%s\n' "$flutter_root" "$ANDROID_HOME" > android/local.properties
+          android/gradlew -p android --no-daemon :app:help
