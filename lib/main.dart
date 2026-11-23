@@ -36,6 +36,8 @@ class ChannelScreen extends StatefulWidget {
 }
 
 class _ChannelScreenState extends State<ChannelScreen> {
+  static const _availabilityTimeout = Duration(seconds: 10);
+
   ChannelAvailability? _availability;
   Future<void>? _pending;
 
@@ -51,7 +53,8 @@ class _ChannelScreenState extends State<ChannelScreen> {
     setState(() => _availability = null);
     ChannelAvailability result;
     try {
-      result = await Future.sync(widget.feed.checkAvailability);
+      result = await Future.sync(widget.feed.checkAvailability)
+          .timeout(_availabilityTimeout);
     } on Exception {
       result = ChannelAvailability.connectionError;
     } finally {

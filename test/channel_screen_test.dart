@@ -57,6 +57,28 @@ void main() {
     expect(find.text('Channel preview unavailable'), findsOneWidget);
   });
 
+  testWidgets(
+    'a timed-out check can be retried and its late result is ignored',
+    (tester) async {
+      final feed = ControlledFeed();
+      await tester.pumpWidget(StickersApp(feed: feed));
+
+      await tester.pump(const Duration(seconds: 10));
+      expect(find.text('Couldn’t check the preview'), findsOneWidget);
+
+      await tester.tap(find.text('Try again'));
+      await tester.pump();
+      expect(feed.requests, hasLength(2));
+      feed.requests.first.complete(ChannelAvailability.unavailable);
+      await tester.pump();
+      expect(find.byType(LinearProgressIndicator), findsOneWidget);
+
+      feed.requests.last.complete(ChannelAvailability.unavailable);
+      await tester.pumpAndSettle();
+      expect(find.text('Channel preview unavailable'), findsOneWidget);
+    },
+  );
+
   testWidgets('pull to refresh and the toolbar stay on the channel', (
     tester,
   ) async {

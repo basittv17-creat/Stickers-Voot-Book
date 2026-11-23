@@ -16,3 +16,15 @@ Channel under test: [Stickers 😀 🌹 Voot Book](https://whatsapp.com/channel/
 The browser result does not establish what Android Chrome or WebView will display, whether WhatsApp initiates a handoff, or whether posts and stickers will render. Even a working public preview would not establish complete history or an automatic synchronization interface. The current app displays its local unavailable state and makes no content requests.
 
 Sources: [WhatsApp Terms, Acceptable Use](https://www.whatsapp.com/legal/terms-of-service), [WhatsApp Business Platform](https://developers.facebook.com/documentation/business-messaging/whatsapp/overview/), [Meta Content Library overview](https://developers.facebook.com/docs/content-library-and-api/content-library-api/overview/), [WhatsApp channel updates in Content Library](https://developers.facebook.com/docs/content-library-and-api/content-library-api/guides/wa-channel-update/).
+
+
+## Android validation follow-up
+
+The 23 November source workspace exposed Linux desktop Chromium, with no Android bridge, emulator, Android device interface, or enrolled remote device. There was no installed Android WebView test host available. The earlier hosted-browser URL policy denial is an execution-environment result. It provides no WhatsApp response status, final destination, page content, or evidence of an embedding restriction.
+
+| Android surface | Posts | Stickers | Images | GIF playback | WhatsApp handoff |
+| --- | --- | --- | --- | --- | --- |
+| Signed-out Android Chrome | Untested | Untested | Untested | Untested | Untested |
+| Android System WebView | Untested | Untested | Untested | Untested | Untested |
+
+Signed-out Chrome can be checked on a connected Android device without packaging this app. The WebView check requires an existing trusted test host on an Android device, or separate approval for a later installable test build. Implementation of channel preview and synchronization still requires positive evidence from a supported surface.
